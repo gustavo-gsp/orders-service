@@ -1,0 +1,36 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type OrderResultType {
+  order: OrderType
+  source: String!
+}
+
+enum OrderStatus {
+  CANCELED
+  PAID
+  PENDING
+}
+
+type OrderType {
+  amount: Float!
+  createdAt: DateTime!
+  currency: String!
+  customerId: String!
+  id: ID!
+  merchant: String!
+  status: OrderStatus!
+  updatedAt: DateTime!
+}
+
+type Query {
+  order(id: String!): OrderResultType!
+  orders(limit: Int): [OrderType!]!
+  ping: String!
+}

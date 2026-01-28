@@ -1,15 +1,23 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
+import { DbHealthIndicator } from './db.health.indicator';
+import { RedisHealthIndicator } from './redis.health.indicator';
 
 @Controller()
 export class HealthController {
-  constructor(private health: HealthCheckService) {}
+  constructor(
+    private health: HealthCheckService,
+    private db: DbHealthIndicator,
+    private redis: RedisHealthIndicator,
+  ) {}
 
   @Get('health')
   @HealthCheck()
   check() {
-    // Na Fase 5 vamos adicionar checks reais de Postgres e Redis.
-    return this.health.check([]);
+    return this.health.check([
+      () => this.db.isHealthy(),
+      () => this.redis.isHealthy(),
+    ]);
   }
 
   @Get('version')
